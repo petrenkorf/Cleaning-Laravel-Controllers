@@ -19,19 +19,19 @@ class SampleStore extends Model
 
     public function fill(array $attributes)
     {
-        $clonedAttributes = $attributes;
-
-        $this->fillBooleansByExistence($clonedAttributes);
+        $clonedAttributes = $this->fillBooleansByExistence($attributes);
 
         return parent::fill($clonedAttributes);
     }
 
-    protected function fillBooleansByExistence(array &$attributes)
+    protected function fillBooleansByExistence(array $attributes)
     {
         foreach ($this->casts as $field => $type) {
             if ($type == 'boolean') {
-                $this->is_active = array_key_exists($field, $attributes);
+                $attributes[$field] = array_key_exists($field, $attributes);
             }
         }
+
+        return $attributes;
     }
 }
